@@ -1,10 +1,10 @@
 ## Traffic Data Exercise
 
-This project reads a file containing traffic flow information on some ficitious streets. It can then calculated the shortest path between any two intersections.
+This project reads a file containing traffic flow information on some ficitious streets. It can then calculate the shortest path between any two intersections.
 
 ### Usage
 
-Input the coordinates of the start intersection and the end intersection to find the shortest path
+Specify the input file and the coordinates of the start intersection and the end intersection to find the shortest path
 
 ```
 sbt run trafficMeasurements.json A 1 F 22

@@ -64,9 +64,12 @@ object DataLoader {
       .groupBy(_.from)
       .map(vertexWithAdjacencies(_.to))
 
+    // vertices appearing only as endpoints need to represented with no adjacencies
     val toVertices = edges
       .groupBy(_.to)
-      .map(vertexWithAdjacencies(_.from))
+      .view
+      .mapValues(_ => Set.empty[Adjacency])
+      .toMap
 
     union(fromVertices, toVertices)
   }
@@ -78,7 +81,7 @@ object DataLoader {
     val vertex = vertexWithAdjacencies._1
     val edges = vertexWithAdjacencies._2
     val adjacencies = edges.map(edge => Adjacency(vertexSupplier(edge), edge.averageTravelTime))
-    vertex -> adjacencies
+    vertex -> adjacencies.toSet
   }
 
   /**

@@ -38,7 +38,7 @@ class ShortestPathSpec extends AnyFunSpec with Matchers {
   describe("Shortest Path Spec") {
 
     it("should determine the shortest path from A,1 to C,2 as through B,2 at 23.0 units") {
-      val shortestPaths = ShortestPath.search(Vertex("A", "1"))
+      val shortestPaths = ShortestPath.search("testTrafficMeasurements.json", Vertex("A", "1"))
       val pathElementOption = shortestPaths.get(Vertex("C", "2"))
       pathElementOption shouldBe defined
 
@@ -48,7 +48,7 @@ class ShortestPathSpec extends AnyFunSpec with Matchers {
     }
 
     it("should determine the shortest path from A,1 to C,3 as through B,3 at 48.0 units") {
-      val shortestPaths = ShortestPath.search(Vertex("A", "1"))
+      val shortestPaths = ShortestPath.search("testTrafficMeasurements.json", Vertex("A", "1"))
       val pathElementOption = shortestPaths.get(Vertex("C", "3"))
       pathElementOption shouldBe defined
 
