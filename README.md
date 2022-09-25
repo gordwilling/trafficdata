@@ -10,14 +10,24 @@ Specify the input file and the coordinates of the start intersection and the end
 sbt run trafficMeasurements.json A 1 F 22
 ```
 
+### Sample Output
 
 ```json
 {
-  "start": "A,1",
+  "start": "A,2",
   "end": "F,22",
   "roadSegments": [
     {
-      "segment": "A,1 -> A,30"
+      "segment": "A,2 -> A,1"
+    },
+    {
+      "segment": "A,1 -> T,1"
+    },
+    {
+      "segment": "T,1 -> T,30"
+    },
+    {
+      "segment": "T,30 -> A,30"
     },
     {
       "segment": "A,30 -> A,29"
@@ -50,16 +60,15 @@ sbt run trafficMeasurements.json A 1 F 22
       "segment": "D,24 -> D,23"
     },
     {
-      "segment": "D,23 -> E,23"
+      "segment": "D,23 -> D,22"
     },
     {
-      "segment": "E,23 -> F,23"
+      "segment": "D,22 -> E,22"
     },
     {
-      "segment": "F,23 -> F,22"
+      "segment": "E,22 -> F,22"
     }
   ],
-  "transitTime": "Total transit time: 414.02394752464375"
+  "transitTime": "Total transit time: 586.6639316189231"
 }
-
 ```
