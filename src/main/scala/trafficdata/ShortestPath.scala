@@ -10,14 +10,14 @@ import scala.collection.mutable
 object ShortestPath {
 
   def main(args: Array[String]): Unit = {
-    if (args.length != 4) {
+    if (args.length != 5) {
       printUsage()
       System.exit(1)
     }
-
-    val start = Vertex(args(0),args(1))
-    val end = Vertex(args(2), args(3))
-    val shortestPaths = search(start)
+    val inputFile = args(0)
+    val start = Vertex(args(1),args(2))
+    val end = Vertex(args(3), args(4))
+    val shortestPaths = search(inputFile, start)
     shortestPaths.get(end) match {
       case Some(_) => printResult(start, end, shortestPaths)
       case None => println(s"Could not find a path from ${start.avenue},${start.street} to ${end.avenue},${end.street}")
@@ -30,8 +30,8 @@ object ShortestPath {
     * @param start the root intersection from which to start the search
     * @return a map of shortest paths from the start to every other intersection
     */
-  def search(start: Vertex): Map[Vertex, PathElement] = {
-    val adjacencyMap = DataLoader.loadTrafficData()
+  def search(inputFile: String, start: Vertex): Map[Vertex, PathElement] = {
+    val adjacencyMap = DataLoader.loadTrafficData(inputFile)
 
     val travelTimes = initialTravelTimes(start, adjacencyMap)
     val shortestPaths = mutable.HashMap.newBuilder.addOne(start -> PathElement(0, start)).result()

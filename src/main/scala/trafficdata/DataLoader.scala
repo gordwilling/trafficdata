@@ -4,6 +4,7 @@ import org.json4s.native.JsonMethods.parse
 import org.json4s.{DefaultFormats, Formats}
 
 import scala.io.Source
+import scala.util.{Failure, Success, Using}
 
 object DataLoader {
 
@@ -11,19 +12,27 @@ object DataLoader {
     * Loads traffic data from the json resource and produces an adjacency map suitable for graph processing
     * @return the adjacency map, where each vertex is associated with its neighbors
     */
-  def loadTrafficData(): Map[Vertex, Set[Adjacency]] = {
+  def loadTrafficData(dataFilePath: String): Map[Vertex, Set[Adjacency]] = {
     implicit val formats: Formats = DefaultFormats
 
-    val json = parse(Source.fromResource("trafficMeasurements.json").getLines().reduce(_ + _))
-    val trafficMeasurementsJson = json \ "trafficMeasurements"
-    val trafficMeasurements = trafficMeasurementsJson.extract[List[TrafficMeasurements]]
+    Using(Source.fromFile(dataFilePath)) { bufferedSource =>
+      val fileContent = bufferedSource.getLines().reduce(_ + _)
+      val json = parse(fileContent)
+      val trafficMeasurementsJson = json \ "trafficMeasurements"
+      val trafficMeasurements = trafficMeasurementsJson.extract[List[TrafficMeasurements]]
 
-    val edges = trafficMeasurements
-      .flatMap(_.measurements)
-      .groupBy(edge)
-      .map(edgeWithAverageMeasurement)
+      val edges = trafficMeasurements
+        .flatMap(_.measurements)
+        .groupBy(edge)
+        .map(edgeWithAverageMeasurement)
 
-    adjacencyMap(edges)
+      adjacencyMap(edges)
+    } match {
+      case Success(adjacencyMap) => adjacencyMap
+      case Failure(e) =>
+        e.printStackTrace()
+        sys.error("Error reading input file")
+    }
   }
 
   /**
