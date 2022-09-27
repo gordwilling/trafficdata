@@ -126,10 +126,10 @@ object ShortestPath {
       """
         |
         |Usage:
-        |  Provide a start intersection and end intersection as arguments with each component separated by a space
+        |  Provide a data file, a start intersection, and end intersection as arguments with each component separated by a space.
         |  For example:
         |
-        |  >sbt run A 1 F 16
+        |  >sbt run trafficMeasurements.json A 1 F 16
         |
         |  will find the shortest path between intersection A,1 and F,16
         |
